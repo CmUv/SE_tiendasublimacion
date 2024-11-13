@@ -90,6 +90,69 @@ button:active {
   border: 1px solid #ddd;
 }
 
+/* Estilos generales para la tabla */
+#productsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Estilo para las celdas de encabezado */
+#productsTable th {
+  background-color: #4CAF50;  /* Color de fondo de encabezado */
+  color: white;               /* Texto blanco en encabezados */
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Estilo para las celdas de datos */
+#productsTable td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Efecto hover para filas */
+#productsTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Estilo para filas alternas */
+#productsTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Centrado de contenido en ciertas columnas, si es necesario */
+#productsTable td:nth-child(4), 
+#productsTable td:nth-child(5) {
+  text-align: center;
+}
+
+/* Estilo del botón "Ver Todos los Productos" */
+#viewProductsButton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+#viewProductsButton:hover {
+  background-color: #45a049;
+}
+
+
+
+
+
 @media (max-width: 600px) {
   h1 {
     font-size: 1.5rem;
@@ -105,3 +168,4 @@ button:active {
     padding: 15px;
   }
 }
+
