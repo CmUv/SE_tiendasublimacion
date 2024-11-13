@@ -69,3 +69,43 @@ document.getElementById('addProductForm').addEventListener('submit', async (e) =
   loadOptions("estilo", "/api/estilos");     // Endpoint para obtener los estilos
   loadOptions("categoria", "/api/categorias"); // Endpoint para obtener las categorías
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const viewProductsButton = document.getElementById('viewProductsButton');
+  const productsTable = document.getElementById('productsTable');
+  const productsTableBody = productsTable.querySelector('tbody');
+
+  // Maneja el clic en el botón de "Ver Todos los Productos"
+  viewProductsButton.addEventListener('click', () => {
+    fetch('/api/getProducts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}) // Enviar vacío para obtener todos los productos
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Limpia la tabla antes de llenarla
+        productsTableBody.innerHTML = '';
+        
+        // Rellena la tabla con los productos obtenidos
+        data.forEach(product => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${product.id}</td>
+            <td>${product.nombre}</td>
+            <td>${product.descripcion}</td>
+            <td>${product.precio}</td>
+            <td>${product.stock}</td>
+            <td>${product.categoria}</td>
+            <td>${product.tipo}</td>
+            <td>${product.estilo}</td>
+          `;
+          productsTableBody.appendChild(row);
+        });
+        
+        // Muestra la tabla después de llenarla
+        productsTable.style.display = 'table';
+      })
+      .catch(error => console.error('Error al obtener productos:', error));
+  });
+});
