@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Si no se encontraron productos, mostrar un mensaje
         if (products.length === 0) {
-          recommendationsDiv.innerHTML = '<p>No se encontraron productos que coincidan con los filtros seleccionados.</p>';
+          recommendationsDiv.innerHTML = '<p>No se encontraron productos que coincidan con sus requisitos, lo sentimos mucho</p>';
         } else {
           // Mostrar los productos recomendados
           products.forEach(product => {
