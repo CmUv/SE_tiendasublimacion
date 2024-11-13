@@ -5,42 +5,45 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+// Definición de la consulta para crear las tablas
+const createTablesQuery = `
+  CREATE TABLE IF NOT EXISTS categorias (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS tipos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS estilos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS productos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    descripcion TEXT,
+    precio REAL NOT NULL,
+    categoria_id INTEGER,
+    tipo_id INTEGER,
+    estilo_id INTEGER,
+    stock INTEGER NOT NULL,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+    FOREIGN KEY (tipo_id) REFERENCES tipos(id),
+    FOREIGN KEY (estilo_id) REFERENCES estilos(id)
+  );
+`;
+
 // Conexión a la base de datos SQLite
 let db = new sqlite3.Database('./database/database.sqlite', (err) => {
   if (err) {
     console.error('Error al conectar a la base de datos:', err.message);
   } else {
     console.log('Conectado a la base de datos SQLite.');
-    
-    // Crear las tablas si no existen
-    const createTablesQuery = `
-      CREATE TABLE IF NOT EXISTS categorias (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL
-      );
-      CREATE TABLE IF NOT EXISTS tipos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL
-      );
-      CREATE TABLE IF NOT EXISTS estilos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL
-      );
-      CREATE TABLE IF NOT EXISTS productos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
-        descripcion TEXT,
-        precio REAL NOT NULL,
-        stock INTEGER DEFAULT 0,  // Columna de stock para la cantidad disponible del producto
-        categoria_id INTEGER,
-        tipo_id INTEGER,
-        estilo_id INTEGER,
-        FOREIGN KEY (categoria_id) REFERENCES categorias(id),
-        FOREIGN KEY (tipo_id) REFERENCES tipos(id),
-        FOREIGN KEY (estilo_id) REFERENCES estilos(id)
-      );
-    `;
-    
+
     // Ejecuta el comando para crear las tablas si no existen
     db.exec(createTablesQuery, (err) => {
       if (err) {
@@ -92,26 +95,20 @@ app.get('/api/estilos', (req, res) => {
 
 // Ruta para agregar un nuevo producto a la base de datos
 app.post('/addProduct', (req, res) => {
-  // Extrae los datos del producto enviados en el cuerpo de la solicitud
   const { nombre, descripcion, precio, categoria, tipo, estilo, stock } = req.body;
-  
-  // Consulta SQL para insertar el nuevo producto en la tabla productos
+
   const query = `
     INSERT INTO productos (nombre, descripcion, precio, categoria_id, tipo_id, estilo_id, stock)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
-
-  // Define los parámetros que se usarán en la consulta
   const params = [nombre, descripcion, precio, categoria, tipo, estilo, stock];
 
-  // Ejecuta la consulta para insertar el producto en la base de datos
   db.run(query, params, function (err) {
     if (err) {
       console.error('Error al insertar producto:', err.message);
       res.status(500).json({ error: err.message });
       return;
     }
-    // Si la inserción es exitosa, devuelve una respuesta con el ID del nuevo producto
     res.status(201).json({ message: 'Producto agregado exitosamente', id: this.lastID });
   });
 });
@@ -120,7 +117,6 @@ app.post('/addProduct', (req, res) => {
 app.post('/api/getProducts', (req, res) => {
   const { categoria_id, tipo_id, estilo_id } = req.body;
 
-  // Construye la consulta base con joins para obtener nombres descriptivos de cada relación
   let query = `
     SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, c.nombre AS categoria, t.nombre AS tipo, e.nombre AS estilo
     FROM productos p
@@ -131,7 +127,6 @@ app.post('/api/getProducts', (req, res) => {
 
   const params = [];
 
-  // Agrega condiciones a la consulta en base a los filtros recibidos
   if (categoria_id) {
     query += ' AND p.categoria_id = ?';
     params.push(categoria_id);
@@ -145,7 +140,6 @@ app.post('/api/getProducts', (req, res) => {
     params.push(estilo_id);
   }
 
-  // Ejecuta la consulta con los filtros aplicados
   db.all(query, params, (err, rows) => {
     if (err) {
       console.error('Error al obtener productos:', err.message);
