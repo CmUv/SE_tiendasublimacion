@@ -10,27 +10,37 @@
   <form id="addProductForm">
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" required>
-    
+
     <label for="tipo">Tipo:</label>
-    <input type="text" id="tipo" name="tipo" required>
-    
+    <select id="tipo" name="tipo" required>
+      <option value="">Seleccionar Tipo</option>
+      <!-- Opciones de tipo cargadas dinámicamente desde la base de datos -->
+    </select>
+
     <label for="estilo">Estilo:</label>
-    <input type="text" id="estilo" name="estilo" required>
-    
+    <select id="estilo" name="estilo" required>
+      <option value="">Seleccionar Estilo</option>
+      <!-- Opciones de estilo cargadas dinámicamente desde la base de datos -->
+    </select>
+
     <label for="categoria">Categoría:</label>
-    <input type="text" id="categoria" name="categoria" required>
-    
+    <select id="categoria" name="categoria" required>
+      <option value="">Seleccionar Categoría</option>
+      <!-- Opciones de categoría cargadas dinámicamente desde la base de datos -->
+    </select>
+
     <label for="descripcion">Descripción:</label>
     <input type="text" id="descripcion" name="descripcion">
-    
+
     <label for="precio">Precio:</label>
     <input type="number" id="precio" name="precio" step="0.01" required>
-    
+
     <label for="stock">Stock:</label>
     <input type="number" id="stock" name="stock" required>
-    
+
     <button type="submit">Agregar Producto</button>
   </form>
+
   <script src="/js/admin.js"></script>
 </body>
 </html>

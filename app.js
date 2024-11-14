@@ -54,41 +54,39 @@ let db = new sqlite3.Database('./database/database.sqlite', (err) => {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-// Ruta para obtener categorías
-app.get('/api/getCategories', (req, res) => {
+// Rutas para obtener categorías, tipos y estilos
+app.get('/api/categorias', (req, res) => {
   db.all('SELECT * FROM categorias', [], (err, rows) => {
     if (err) {
       console.error('Error al obtener categorías:', err.message);
       res.status(500).json({ error: err.message });
       return;
     }
-    console.log('Categorías obtenidas:', rows);  // Imprime las categorías en la consola
+    console.log('Categorías obtenidas:', rows);
     res.json(rows);
   });
 });
 
-// Ruta para obtener tipos
-app.get('/api/getTypes', (req, res) => {
+app.get('/api/tipos', (req, res) => {
   db.all('SELECT * FROM tipos', [], (err, rows) => {
     if (err) {
       console.error('Error al obtener tipos:', err.message);
       res.status(500).json({ error: err.message });
       return;
     }
-    console.log('Tipos obtenidos:', rows);  // Imprime los tipos en la consola
+    console.log('Tipos obtenidos:', rows);
     res.json(rows);
   });
 });
 
-// Ruta para obtener estilos
-app.get('/api/getStyles', (req, res) => {
+app.get('/api/estilos', (req, res) => {
   db.all('SELECT * FROM estilos', [], (err, rows) => {
     if (err) {
       console.error('Error al obtener estilos:', err.message);
       res.status(500).json({ error: err.message });
       return;
     }
-    console.log('Estilos obtenidos:', rows);  // Imprime los estilos en la consola
+    console.log('Estilos obtenidos:', rows);
     res.json(rows);
   });
 });
@@ -107,7 +105,6 @@ app.post('/api/getProducts', (req, res) => {
 
   const params = [];
 
-  // Filtrando los parámetros si existen en la solicitud
   if (categoria_id) {
     query += ' AND p.categoria_id = ?';
     params.push(categoria_id);
@@ -121,9 +118,8 @@ app.post('/api/getProducts', (req, res) => {
     params.push(estilo_id);
   }
 
-  console.log('Consulta SQL:', query);  // Imprime la consulta SQL generada
+  console.log('Consulta SQL:', query);
 
-  // Ejecuta la consulta con los parámetros
   db.all(query, params, (err, rows) => {
     if (err) {
       console.error('Error al obtener productos:', err.message);
@@ -131,7 +127,7 @@ app.post('/api/getProducts', (req, res) => {
       return;
     }
 
-    console.log('Productos obtenidos:', rows);  // Imprime los productos obtenidos
+    console.log('Productos obtenidos:', rows);
     res.json(rows);
   });
 });

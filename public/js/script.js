@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Cargar categorías desde la API
-  fetch('/api/getCategories')
+  fetch('/api/categorias')
     .then(response => response.json())
     .then(data => {
       const categoriaSelect = document.getElementById('categoria');
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(error => console.error('Error al cargar categorías:', error));
 
   // Cargar tipos desde la API
-  fetch('/api/getTypes')
+  fetch('/api/tipos')
     .then(response => response.json())
     .then(data => {
       const tipoSelect = document.getElementById('tipo');
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .catch(error => console.error('Error al cargar tipos:', error));
 
   // Cargar estilos desde la API
-  fetch('/api/getStyles')
+  fetch('/api/estilos')
     .then(response => response.json())
     .then(data => {
       const estiloSelect = document.getElementById('estilo');
