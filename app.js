@@ -31,6 +31,7 @@ let db = new sqlite3.Database('./database/database.sqlite', (err) => {
         nombre TEXT NOT NULL,
         descripcion TEXT,
         precio REAL NOT NULL,
+        stock INTEGER DEFAULT 0,  // Columna de stock para la cantidad disponible del producto
         categoria_id INTEGER,
         tipo_id INTEGER,
         estilo_id INTEGER,
@@ -40,6 +41,7 @@ let db = new sqlite3.Database('./database/database.sqlite', (err) => {
       );
     `;
     
+    // Ejecuta el comando para crear las tablas si no existen
     db.exec(createTablesQuery, (err) => {
       if (err) {
         console.error('Error al crear las tablas:', err.message);
@@ -62,7 +64,6 @@ app.get('/api/categorias', (req, res) => {
       res.status(500).json({ error: err.message });
       return;
     }
-    console.log('Categorías obtenidas:', rows);
     res.json(rows);
   });
 });
@@ -74,7 +75,6 @@ app.get('/api/tipos', (req, res) => {
       res.status(500).json({ error: err.message });
       return;
     }
-    console.log('Tipos obtenidos:', rows);
     res.json(rows);
   });
 });
@@ -86,17 +86,43 @@ app.get('/api/estilos', (req, res) => {
       res.status(500).json({ error: err.message });
       return;
     }
-    console.log('Estilos obtenidos:', rows);
     res.json(rows);
   });
 });
 
-// Ruta para obtener productos filtrados
+// Ruta para agregar un nuevo producto a la base de datos
+app.post('/addProduct', (req, res) => {
+  // Extrae los datos del producto enviados en el cuerpo de la solicitud
+  const { nombre, descripcion, precio, categoria, tipo, estilo, stock } = req.body;
+  
+  // Consulta SQL para insertar el nuevo producto en la tabla productos
+  const query = `
+    INSERT INTO productos (nombre, descripcion, precio, categoria_id, tipo_id, estilo_id, stock)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  // Define los parámetros que se usarán en la consulta
+  const params = [nombre, descripcion, precio, categoria, tipo, estilo, stock];
+
+  // Ejecuta la consulta para insertar el producto en la base de datos
+  db.run(query, params, function (err) {
+    if (err) {
+      console.error('Error al insertar producto:', err.message);
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    // Si la inserción es exitosa, devuelve una respuesta con el ID del nuevo producto
+    res.status(201).json({ message: 'Producto agregado exitosamente', id: this.lastID });
+  });
+});
+
+// Ruta para obtener productos filtrados según categoría, tipo y estilo
 app.post('/api/getProducts', (req, res) => {
   const { categoria_id, tipo_id, estilo_id } = req.body;
 
+  // Construye la consulta base con joins para obtener nombres descriptivos de cada relación
   let query = `
-    SELECT p.id, p.nombre, p.descripcion, p.precio, c.nombre AS categoria, t.nombre AS tipo, e.nombre AS estilo
+    SELECT p.id, p.nombre, p.descripcion, p.precio, p.stock, c.nombre AS categoria, t.nombre AS tipo, e.nombre AS estilo
     FROM productos p
     JOIN categorias c ON p.categoria_id = c.id
     JOIN tipos t ON p.tipo_id = t.id
@@ -105,6 +131,7 @@ app.post('/api/getProducts', (req, res) => {
 
   const params = [];
 
+  // Agrega condiciones a la consulta en base a los filtros recibidos
   if (categoria_id) {
     query += ' AND p.categoria_id = ?';
     params.push(categoria_id);
@@ -118,21 +145,18 @@ app.post('/api/getProducts', (req, res) => {
     params.push(estilo_id);
   }
 
-  console.log('Consulta SQL:', query);
-
+  // Ejecuta la consulta con los filtros aplicados
   db.all(query, params, (err, rows) => {
     if (err) {
       console.error('Error al obtener productos:', err.message);
       res.status(500).json({ error: err.message });
       return;
     }
-
-    console.log('Productos obtenidos:', rows);
     res.json(rows);
   });
 });
 
-// Iniciar el servidor
+// Iniciar el servidor en el puerto especificado
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
