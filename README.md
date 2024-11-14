@@ -1,3 +1,3 @@
 # SE_tiendasublimacion
 
-sistema con reglas basicas
+sistema con reglas basicas para recomendaciones
