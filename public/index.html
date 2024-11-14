@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recomendaciones de Productos</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>Recomendaciones de Productos</h1>
+  
+  <!-- Formulario para seleccionar categoría, tipo y estilo -->
+  <form id="recommendForm">
+    <label for="categoria">Categoría:</label>
+    <select id="categoria" name="categoria">
+      <option value="">Seleccionar Categoría</option>
+    </select>
+
+    <label for="tipo">Tipo:</label>
+    <select id="tipo" name="tipo">
+      <option value="">Seleccionar Tipo</option>
+    </select>
+
+    <label for="estilo">Estilo:</label>
+    <select id="estilo" name="estilo">
+      <option value="">Seleccionar Estilo</option>
+    </select>
+
+    <button type="submit">Obtener Recomendación</button>
+  </form>
+
+  <!-- Mostrar productos recomendados -->
+  <div id="recommendations"></div>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+/your-project-folder
+├── /database
+│   └── database.sqlite            # Base de datos SQLite
+├── /public
+│   ├── /css
+│   │   └── styles.css            # Hojas de estilo CSS
+│   ├── /js
+│   │   ├── login.js              # Lógica de login en el frontend
+│   │   └── app.js                # Lógica de la app (frontend)
+│   ├── index.html                # Página de inicio para usuarios no autenticados
+│   ├── admin.html                # Página de administración para administradores
+│   ├── login.html                # Página de login
+│   └── register.html             # Página para registro de usuarios por parte de admins
+├── /routes
+│   └── api.js                    # Rutas de la API de Express (backend)
+├── /views
+│   └── login.ejs                 # Vista para login (opcional, si usas ejs como template engine)
+├── app.js                        # Configuración principal de Express (backend)
+├── package.json                  # Información del proyecto y dependencias
+└── .gitignore                    # Archivos que no se deben subir a git
