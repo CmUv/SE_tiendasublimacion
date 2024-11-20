@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Panel de Administración</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
   <h1>Agregar Producto</h1>
   <form id="addProductForm">
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" required>
 
-    <label for="tipo">Tipo:</label>
-    <select id="tipo" name="tipo" required>
+    <label for="tipo">Tipos:</label>
+    <select id="tipo" name="tipo_id" required>
       <option value="">Seleccionar Tipo</option>
-      <!-- Opciones de tipo cargadas dinámicamente desde la base de datos -->
     </select>
 
-    <label for="estilo">Estilo:</label>
-    <select id="estilo" name="estilo" required>
+    <label for="estilo">Estilos:</label>
+    <select id="estilo" name="estilo_id" required>
       <option value="">Seleccionar Estilo</option>
-      <!-- Opciones de estilo cargadas dinámicamente desde la base de datos -->
     </select>
 
     <label for="categoria">Categoría:</label>
-    <select id="categoria" name="categoria" required>
+    <select id="categoria" name="categoria_id" required>
       <option value="">Seleccionar Categoría</option>
-      <!-- Opciones de categoría cargadas dinámicamente desde la base de datos -->
     </select>
 
     <label for="descripcion">Descripción:</label>
@@ -45,22 +44,26 @@
   <button id="viewProductsButton">Ver Todos los Productos</button>
 
   <!-- Tabla para mostrar todos los productos -->
+  <button id="saveChangesButton" style="display:none;">Guardar Cambios</button>
   <table id="productsTable" border="1" style="margin-top: 20px; width: 100%; display: none;">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>ID Producto</th>
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Precio</th>
-        <th>Stock</th>
+        <th>Cantidad</th>
         <th>Categoría</th>
         <th>Tipo</th>
         <th>Estilo</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
+
   <script src="/js/admin.js"></script>
 </body>
+
 </html>

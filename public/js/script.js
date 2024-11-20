@@ -69,26 +69,27 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(products => {
         const recommendationsDiv = document.getElementById('recommendations');
         recommendationsDiv.innerHTML = ''; // Limpiar las recomendaciones anteriores
-
-        // Si no se encontraron productos, mostrar un mensaje
+      
+        // Si no se encontraron productos, mostrar un mensaje amigable
         if (products.length === 0) {
-          recommendationsDiv.innerHTML = '<p>No se encontraron productos que coincidan con sus requisitos, lo sentimos mucho</p>';
+          recommendationsDiv.innerHTML = `
+            <p class="no-products">No se encontraron productos que coincidan con sus requisitos. Pero no te preocupes, ¡seguro que tenemos algo para ti! Puedes explorar todo nuestro catálogo.</p>`;
         } else {
-          // Mostrar los productos recomendados
+          // Mostrar los productos recomendados con un tono conversacional
           products.forEach(product => {
             const productDiv = document.createElement('div');
             productDiv.innerHTML = `
-              <h2>${product.nombre}</h2>
-              <p>${product.descripcion}</p>
-              <p>Precio: $${product.precio}</p>
-              <p>Categoría: ${product.categoria}</p>
-              <p>Tipo: ${product.tipo}</p>
-              <p>Estilo: ${product.estilo}</p>
+              <h2>¡Creo que te encantaría el ${product.nombre}!</h2>
+              <p>Este producto es perfecto si buscas algo con un estilo <strong>${product.estilo}</strong>. Además, pertenece a nuestra categoría de <strong>${product.categoria}</strong>, que es muy popular.</p>
+              <p>Déjame contarte más: ${product.descripcion ? product.descripcion : "Es uno de nuestros productos favoritos, diseñado para ti."}</p>
+              <p><strong>Precio:</strong> $${product.precio.toFixed(2)}. ¡Es una gran oferta!</p>
+              <p>¿Qué dices? Estoy seguro de que el <strong>${product.nombre}</strong> será una excelente elección para ti.</p>
             `;
             recommendationsDiv.appendChild(productDiv);
           });
         }
       })
       .catch(error => console.error('Error al obtener productos:', error));
+      
   });
 });

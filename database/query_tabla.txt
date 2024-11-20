@@ -1,0 +1,32 @@
+-- Crear tabla de Categorías
+CREATE TABLE categorias (
+    id_categoria INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+);
+
+-- Crear tabla de Tipos
+CREATE TABLE tipos (
+    id_tipo INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+);
+
+-- Crear tabla de Estilos
+CREATE TABLE estilos (
+    id_estilo INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL
+);
+
+-- Crear tabla de Productos
+CREATE TABLE productos (
+    id_producto INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    descripcion TEXT,
+    precio REAL,
+    cantidad INTEGER,
+    id_categoria INTEGER,
+    id_tipo INTEGER,
+    id_estilo INTEGER,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria),
+    FOREIGN KEY (id_tipo) REFERENCES tipos(id_tipo),
+    FOREIGN KEY (id_estilo) REFERENCES estilos(id_estilo)
+);
